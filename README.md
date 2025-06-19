@@ -17,7 +17,7 @@ Quick setup from anywhere:
 git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude
 
 # Install into existing directory
-git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude-temp && cp -r ~/.claude-temp/* ~/.claude/ && rm -rf ~/.claude-temp
+mkdir -p ~/.claude && cd ~/.claude && git init && git remote add origin https://github.com/FrozenPandaz/config-claude.git && git pull origin main
 ```
 
 Or manual setup:
