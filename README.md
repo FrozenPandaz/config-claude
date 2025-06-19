@@ -11,6 +11,12 @@ My personal configuration files for Claude Code CLI.
 
 ## Setup
 
+Quick setup from anywhere:
+```bash
+git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude
+```
+
+Or manual setup:
 1. Clone this repository to your `.claude` directory
 2. Customize `CLAUDE.md` with your preferences
 3. Adjust `settings.json` as needed
