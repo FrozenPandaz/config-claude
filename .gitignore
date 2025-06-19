@@ -11,3 +11,6 @@ local/
 
 # IDE specific files
 ide/
+
+# Project conversation history
+projects/
