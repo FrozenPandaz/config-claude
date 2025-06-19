@@ -1,0 +1,13 @@
+# Credentials and sensitive files
+.credentials.json
+
+# Temporary files
+tmp/
+
+# Cache and local data
+statsig/
+todos/
+local/
+
+# IDE specific files
+ide/
