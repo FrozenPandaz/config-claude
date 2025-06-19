@@ -62,7 +62,9 @@ gh issue list --repo nrwl/nx --state open --search "type:issue no:assignee" --li
    ```
 4. Apply scope labels by technology groups
 5. Apply priority labels conservatively
-6. Open issues in browser for verification
+6. **MANDATORY: Open ALL assigned issues in browser for verification and review**
+   - Use the browser commands below to open each issue
+   - Review assignments before finalizing
 
 ## Bulk Operations Commands
 
@@ -82,8 +84,17 @@ gh issue edit 12346 12347 --repo nrwl/nx --add-label "priority: medium"
 
 ## Browser Review Command
 
+**IMPORTANT: Always open all assigned issues in browser for review**
+
 ```bash
+# macOS
 for issue in [issue_numbers]; do open https://github.com/nrwl/nx/issues/$issue; done
+
+# Linux
+for issue in [issue_numbers]; do xdg-open https://github.com/nrwl/nx/issues/$issue; done
+
+# Alternative: Use gh to open issues directly
+gh issue view [issue_number] --repo nrwl/nx --web
 ```
 
 ## Key Improvements from v1
