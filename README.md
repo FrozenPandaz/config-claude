@@ -16,8 +16,8 @@ Quick setup from anywhere:
 # Fresh install (will fail if ~/.claude already exists)
 git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude
 
-# Force install (replaces existing ~/.claude directory)
-rm -rf ~/.claude && git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude
+# Install into existing directory
+git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude-temp && cp -r ~/.claude-temp/* ~/.claude/ && rm -rf ~/.claude-temp
 ```
 
 Or manual setup:
