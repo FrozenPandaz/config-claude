@@ -3,95 +3,125 @@
 ## Command
 
 ```
-Analyze the last 25 unassigned GitHub issues for the Nx repository.
+Analyze the last 25 unassigned GitHub issues for the Nx repository with improved assignment logic.
 
-Unassigned Github issues can be retrieved with the command, `gh issue list --repo nrwl/nx --state open --search "type:issue no:assignee" --limit=25`
+Fetch issues with:
+gh issue list --repo nrwl/nx --state open --search "type:issue no:assignee" --limit=25
 
-Assign, prioritize, and socpe them based on the following criteria:
+**Enhanced Team Assignment Rules (Technology-First Approach):**
+- @barbados-clemens - Documentation, lifecycle hooks, developer experience, API docs
+- @lourw - Java/Gradle
+- @leosvelperez - Angular (primary), TypeScript, testing tools (Jest/Cypress/Playwright), ESLint issues
+- @Coly010 - Webpack/Rollup/Rspack configs, Module Federation, Storybook, Vue, bundler optimization, React Native, Nx Release, migration utilities, React, Node/NestJS/Express, NextJS, Remix, create-nx-workspace, preset issues
+- @AgentEnder - Nx Core (caching/daemon/graph), installation issues, plugin system, devkit, affected calculation
 
-**Team Assignment Rules:**
-- @barbados-clemens - Caleb handles Documentation issues
-- @ndcunningham - Nicholas handles React, Node, Self hosted cache, and create-nx-workspace issues
-- @xiongemi - Emily handles Java, React Native, Nx Release
-- @leosvelperez - Leo handles TypeScript, testing tools (Playwright, Cypress, Jest, ESLint)
-- @Coly010 - Colum handles Web technologies such as Vue, Angular, Module Federation, Storybook, webpack, rspack, rollup
-- @AgentEnder - Craigory handles Nx Core, Nx Devkit, configuration, Nx plugins, daemon issues
+**Smart Assignment Logic (Check in Order):**
+1. **Technology Keywords in Title/Body:**
+   - "Angular", "ng serve", "@angular" → @leosvelperez
+   - "Nest", "NestJS", "@nx/nest" → @ndcunningham  
+   - "Next", "NextJS", "@nx/next" → @ndcunningham
+   - "React", "@nx/react" → @ndcunningham
+   - "webpack", "rollup", "rspack", "bundler" → @Coly010
+   - "Module Federation", "MF" → @Coly010
+   - "create-nx-workspace", "preset" → @ndcunningham
+   - "cache", "daemon", "affected", "nx reset" → @AgentEnder
+   - "plugin", "generator", "executor" → @AgentEnder
+   - "docs", "documentation", "lifecycle" → @barbados-clemens
 
-**Scope Assignment Rules:**
-Assign appropriate scope labels based on issue content:
-- scope: core - Core Nx functionality
-- scope: devkit - Nx DevKit related
-- scope: plugins - Plugin development/issues
-- scope: angular - Angular support
-- scope: react - React support
-- scope: vue - Vue support
-- scope: node - Node/Express/NestJS support
-- scope: nextjs - NextJS support
-- scope: remix - Remix support
-- scope: java - Java/Gradle support
-- scope: react-native - React Native support
-- "scope: testing tools" - Cypress/Jest/Playwright/Vitest
-- scope: linter - ESLint support
-- scope: bundlers - Webpack/Rollup issues
-- scope: module federation - Module federation
-- scope: storybook - Storybook support
-- scope: release - Nx Release functionality
-- scope: powerpack - Nx Powerpack features
-- scope: nx-cloud - Nx Cloud related
-- scope: docs - Documentation
-- scope: misc - Miscellaneous issues
+2. **Error Pattern Analysis:**
+   - Compilation/build failures with Angular → @leosvelperez
+   - Webpack configuration errors → @Coly010
+   - Installation/dependency issues → @AgentEnder
+   - Preset/generator failures → Check technology first, fallback @AgentEnder
 
-**Priority Classification:**
-- High: Critical functionality failures, performance issues, CI/CD blocks, that would affect many people
-   - Be convservative on what gets high priority. Even if the functionality is failing, it should only be high priority if it affects many people.
-- Medium: Standard bugs, feature improvements, configuration issues
-- Low: Documentation improvements, minor UX issues
+3. **Scope Assignment:**
+   - Match scope to technology mentioned in issue
+   - Use "scope: core" only for caching/daemon/graph issues
+   - Use "scope: misc" for installation/setup issues
 
-**Output Format:**
-Report the analysis with:
-1. Issues grouped by assignee
-2. Include issue number, title, priority level, and recommended scope label
-3. Brief explanation of why each issue fits that team member's expertise and scope
-4. Summary statistics (priority distribution, scope distribution, workload balance)
+**Conservative Priority Rules:**
+- **High**: Blocks many users (workspace creation, compilation failures, security CVEs)
+- **Medium**: Standard bugs, configuration issues, generator problems
+- **Low**: Documentation, UI improvements, edge cases
+
+**Validation Steps:**
+1. Check issue body for actual error messages/stack traces
+2. Look at reproduction steps to identify real problem area  
+3. Consider if issue affects framework specifically vs Nx core
+4. Verify priority based on user impact scope
 ```
 
-## Make these updates to the github issues 
+## Implementation Steps
 
-1. Add a labels for scope: and priority: and assign the tasks in bulk using the `--add-assignee` flag.
+1. Fetch and analyze issues with detailed content inspection
+2. Apply technology-first assignment logic
+3. Bulk assign using GitHub CLI:
+   ```bash
+   gh issue edit [numbers] --repo nrwl/nx --add-assignee [username]
+   ```
+4. Apply scope labels by technology groups
+5. Apply priority labels conservatively
+6. **MANDATORY: Open ALL assigned issues in browser for verification and review**
+   - Use the browser commands below to open each issue
+   - Review assignments before finalizing
 
-2. Apply the assignees in bulk, then apply the scope: in bulk, and then apply the priority label in bulk.
+## Bulk Operations Commands
 
-## Showing Results
-
-Show results in a compact format where each issue is only given a single line.
-
-Open all the issues by opening them in the browser one by one with the following command:
 ```bash
-for issue in [List of issues]; do open
-      https://github.com/nrwl/nx/issues/$issue; done)
+# Example assignment by technology groups
+gh issue edit 12345 12346 --repo nrwl/nx --add-assignee ndcunningham
+gh issue edit 12347 12348 --repo nrwl/nx --add-assignee leosvelperez
+
+# Apply scopes by category  
+gh issue edit 12345 12346 --repo nrwl/nx --add-label "scope: node"
+gh issue edit 12347 12348 --repo nrwl/nx --add-label "scope: angular"
+
+# Apply priorities
+gh issue edit 12345 --repo nrwl/nx --add-label "priority: high"
+gh issue edit 12346 12347 --repo nrwl/nx --add-label "priority: medium"
 ```
 
-## Customization Options
+## Browser Review Command
 
-You can modify the command by:
-- Changing the number of issues to analyze (default: 25)
-- Adjusting priority criteria
-- Adding/removing team members
-- Changing the date range for issue fetching
+**MANDATORY: Open ALL assigned issues in browser for verification and review**
 
-## Example Variations
+After completing issue assignments, you MUST open every single assigned issue in the browser for manual validation. No exceptions - every issue that gets assigned must be opened for human review.
 
-**For Specific Time Period:**
-```
-Analyze unassigned GitHub issues from the last 7 days and assign them...
+```bash
+# macOS - Opens all issues in browser tabs
+for issue in [space_separated_issue_numbers]; do open "https://github.com/nrwl/nx/issues/$issue"; done
+
+# Linux - Opens all issues in browser tabs  
+for issue in [space_separated_issue_numbers]; do xdg-open "https://github.com/nrwl/nx/issues/$issue"; done
+
+# Windows - Opens all issues in browser tabs
+for issue in [space_separated_issue_numbers]; do start "https://github.com/nrwl/nx/issues/$issue"; done
+
+# Alternative: Use gh CLI to open issues directly (one at a time)
+gh issue view [issue_number] --repo nrwl/nx --web
 ```
 
-**For Specific Labels:**
-```
-Analyze unassigned GitHub issues with labels "bug" or "type: feature" from the last 30 days and assign them...
+**Example Usage:**
+```bash
+# Linux example with actual issue numbers from assignment
+for issue in 32296 32295 32290 32285 32281 32277 32267 32265 32258 32254 32249 32236 32234 32225 32219 32214 32212 32209 32208 32207 32206 32205 32203 32190 32188; do xdg-open "https://github.com/nrwl/nx/issues/$issue"; done
+
+# macOS example with actual issue numbers from assignment
+for issue in 32296 32295 32290 32285 32281 32277 32267 32265 32258 32254 32249 32236 32234 32225 32219 32214 32212 32209 32208 32207 32206 32205 32203 32190 32188; do open "https://github.com/nrwl/nx/issues/$issue"; done
 ```
 
-**For Workload Balancing:**
-```
-Analyze the last 25 unassigned GitHub issues, assign them to team members, and highlight any workload imbalances. Suggest reassignments if needed...
-```
+**Critical Requirements:**
+1. Every single assigned issue MUST be opened in browser
+2. Create a comprehensive list of ALL issue numbers that were assigned
+3. Use the appropriate command for the operating system
+4. Verify that all browser tabs opened successfully
+5. Do not consider the assignment process complete until all issues are opened for review
+
+## Key Features
+
+- Technology-first assignment (Angular issues go to Angular expert, not general web expert)
+- Keyword-based logic for faster categorization
+- Conservative priority assignment (fewer high priority items)
+- Error pattern recognition for better accuracy
+- Validation steps to double-check assignments
+- Bulk operations for efficiency

@@ -14,3 +14,7 @@ ide/
 
 # Project conversation history
 projects/
+
+settings.local.json
+
+shell-snapshots
