@@ -13,7 +13,11 @@ My personal configuration files for Claude Code CLI.
 
 Quick setup from anywhere:
 ```bash
+# Fresh install (will fail if ~/.claude already exists)
 git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude
+
+# Force install (replaces existing ~/.claude directory)
+rm -rf ~/.claude && git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude
 ```
 
 Or manual setup:
