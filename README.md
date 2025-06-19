@@ -16,8 +16,8 @@ Quick setup from anywhere:
 # Fresh install (will fail if ~/.claude already exists)
 git clone https://github.com/FrozenPandaz/config-claude.git ~/.claude
 
-# Install into existing directory
-mkdir -p ~/.claude && cd ~/.claude && git init && git remote add origin https://github.com/FrozenPandaz/config-claude.git && git pull origin main
+# Install into existing directory (overwrites conflicting files)
+mkdir -p ~/.claude && cd ~/.claude && git init && git remote add origin https://github.com/FrozenPandaz/config-claude.git && git pull origin main --allow-unrelated-histories --strategy=recursive -X theirs
 ```
 
 Or manual setup:
