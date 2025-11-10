@@ -5,4 +5,7 @@ Whenever you work, please store some notes in `.md` different files titled by to
 
 I never want to mention that the PR was co-authored by claude Whenever you commit or help me make a PR.
 
+# Commit Messages
+Keep commit messages concise and descriptive. Use conventional commit format when possible (feat:, fix:, docs:, etc.)
+
 The main github repo that I work on is nrwl/nx so please use that repo when you need to find stuff out from github

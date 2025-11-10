@@ -16,5 +16,8 @@ ide/
 projects/
 
 settings.local.json
+file-history
+debug
+history.jsonl
 
 shell-snapshots
