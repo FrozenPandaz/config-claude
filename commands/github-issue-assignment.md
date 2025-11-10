@@ -1,127 +1,99 @@
 # GitHub Issue Assignment Command
 
-## Command
+## Overview
 
-```
-Analyze the last 25 unassigned GitHub issues for the Nx repository with improved assignment logic.
+This command orchestrates a multi-agent workflow to triage and assign unassigned Nx repository issues.
 
-Fetch issues with:
-gh issue list --repo nrwl/nx --state open --search "type:issue no:assignee" --limit=25
+The workflow uses:
+- **github-issue-triage skill** - Provides team expertise mapping, assignment rules, and priority classification
+- **Analysis Agent** - Fetches and analyzes the last 25 unassigned issues
+- **Assignment Agent** - Performs bulk assignments, labels, and priorities
+- **Verification** - Opens assigned issues in browser for manual review
 
-**Enhanced Team Assignment Rules (Technology-First Approach):**
+## Workflow
+
+The command will execute in three stages:
+
+### Stage 1: Issue Analysis
+A Task agent will:
+1. Fetch the last 25 unassigned Nx issues using: `gh issue list --repo nrwl/nx --state open --search "type:issue no:assignee" --limit=25`
+2. Analyze each issue using the `github-issue-triage` skill
+3. Generate assignment recommendations with:
+   - Recommended assignee (based on technology keywords)
+   - Suggested scope label
+   - Suggested priority level
+   - Reasoning for the assignment
+
+### Stage 2: Bulk Assignment
+A Task agent will:
+1. Execute bulk `gh issue edit` commands to assign issues
+2. Apply scope labels by technology group
+3. Apply priority labels conservatively
+4. Generate a comprehensive list of all assigned issue numbers
+
+### Stage 3: Browser Verification
+Execute platform-specific browser opening commands:
+- **macOS**: `for issue in NUMBERS; do open "https://github.com/nrwl/nx/issues/$issue"; done`
+- **Linux**: `for issue in NUMBERS; do xdg-open "https://github.com/nrwl/nx/issues/$issue"; done`
+- **Windows**: `for issue in NUMBERS; do start "https://github.com/nrwl/nx/issues/$issue"; done`
+
+Every assigned issue MUST be opened in the browser for manual review.
+
+## Assignment Rules Reference
+
+The `github-issue-triage` skill contains:
+
+**Team Members:**
 - @barbados-clemens - Documentation, lifecycle hooks, developer experience, API docs
 - @lourw - Java/Gradle
 - @leosvelperez - Angular (primary), TypeScript, testing tools (Jest/Cypress/Playwright), ESLint issues
-- @Coly010 - Webpack/Rollup/Rspack configs, Module Federation, Storybook, Vue, bundler optimization, React Native, Nx Release, migration utilities, React, Node/NestJS/Express, NextJS, Remix, create-nx-workspace, preset issues
+- @Coly010 - Webpack/Rollup/Rspack configs, Module Federation, Storybook, Vue, bundler optimization, React Native, Nx Release, Publishing, migration utilities, React, Node/NestJS/Express, NextJS, Remix, create-nx-workspace, preset issues
 - @AgentEnder - Nx Core (caching/daemon/graph), installation issues, plugin system, devkit, affected calculation
 
-**Smart Assignment Logic (Check in Order):**
-1. **Technology Keywords in Title/Body:**
-   - "Angular", "ng serve", "@angular" → @leosvelperez
-   - "Nest", "NestJS", "@nx/nest" → @ndcunningham  
-   - "Next", "NextJS", "@nx/next" → @ndcunningham
-   - "React", "@nx/react" → @ndcunningham
-   - "webpack", "rollup", "rspack", "bundler" → @Coly010
-   - "Module Federation", "MF" → @Coly010
-   - "create-nx-workspace", "preset" → @ndcunningham
-   - "cache", "daemon", "affected", "nx reset" → @AgentEnder
-   - "plugin", "generator", "executor" → @AgentEnder
-   - "docs", "documentation", "lifecycle" → @barbados-clemens
+**Technology Keywords:**
+- "Angular", "ng serve", "@angular" → @leosvelperez
+- "Nest", "NestJS", "@nx/nest" → @Coly010
+- "Next", "NextJS", "@nx/next" → @Coly010
+- "React", "@nx/react" → @Coly010
+- "webpack", "rollup", "rspack", "bundler" → @Coly010
+- "Module Federation", "MF" → @Coly010
+- "cache", "daemon", "affected", "nx reset" → @AgentEnder
+- "plugin", "generator", "executor" → @AgentEnder
+- "docs", "documentation", "lifecycle" → @barbados-clemens
 
-2. **Error Pattern Analysis:**
-   - Compilation/build failures with Angular → @leosvelperez
-   - Webpack configuration errors → @Coly010
-   - Installation/dependency issues → @AgentEnder
-   - Preset/generator failures → Check technology first, fallback @AgentEnder
+For complete rules, see the `github-issue-triage` skill.
 
-3. **Scope Assignment:**
-   - Match scope to technology mentioned in issue
-   - Use "scope: core" only for caching/daemon/graph issues
-   - Use "scope: misc" for installation/setup issues
+## How It Works
 
-**Conservative Priority Rules:**
-- **High**: Blocks many users (workspace creation, compilation failures, security CVEs)
-- **Medium**: Standard bugs, configuration issues, generator problems
-- **Low**: Documentation, UI improvements, edge cases
+### Stage 1 Agent Task
+The analysis agent will:
+- Use the `github-issue-triage` skill to evaluate each issue
+- Check technology keywords in title/body against team expertise
+- Analyze error patterns to identify the problem area
+- Recommend scope labels matching the technology
+- Apply priority rules conservatively
+- Output a structured list of assignments with reasoning
 
-**Validation Steps:**
-1. Check issue body for actual error messages/stack traces
-2. Look at reproduction steps to identify real problem area  
-3. Consider if issue affects framework specifically vs Nx core
-4. Verify priority based on user impact scope
-```
+### Stage 2 Agent Task
+The assignment agent will:
+- Take recommendations from Stage 1
+- Execute `gh issue edit` commands to assign issues to team members
+- Apply scope and priority labels in bulk operations
+- Maintain a comprehensive list of all issue numbers assigned
 
-## Implementation Steps
+### Stage 3 Verification
+After all assignments:
+1. Use the appropriate browser opening command for your OS
+2. Open ALL assigned issues in browser tabs
+3. Manually review each assignment
+4. Verify that assignees are appropriate
+5. Do not consider the process complete until all issues are reviewed
 
-1. Fetch and analyze issues with detailed content inspection
-2. Apply technology-first assignment logic
-3. Bulk assign using GitHub CLI:
-   ```bash
-   gh issue edit [numbers] --repo nrwl/nx --add-assignee [username]
-   ```
-4. Apply scope labels by technology groups
-5. Apply priority labels conservatively
-6. **MANDATORY: Open ALL assigned issues in browser for verification and review**
-   - Use the browser commands below to open each issue
-   - Review assignments before finalizing
+## Key Benefits
 
-## Bulk Operations Commands
-
-```bash
-# Example assignment by technology groups
-gh issue edit 12345 12346 --repo nrwl/nx --add-assignee ndcunningham
-gh issue edit 12347 12348 --repo nrwl/nx --add-assignee leosvelperez
-
-# Apply scopes by category  
-gh issue edit 12345 12346 --repo nrwl/nx --add-label "scope: node"
-gh issue edit 12347 12348 --repo nrwl/nx --add-label "scope: angular"
-
-# Apply priorities
-gh issue edit 12345 --repo nrwl/nx --add-label "priority: high"
-gh issue edit 12346 12347 --repo nrwl/nx --add-label "priority: medium"
-```
-
-## Browser Review Command
-
-**MANDATORY: Open ALL assigned issues in browser for verification and review**
-
-After completing issue assignments, you MUST open every single assigned issue in the browser for manual validation. No exceptions - every issue that gets assigned must be opened for human review.
-
-```bash
-# macOS - Opens all issues in browser tabs
-for issue in [space_separated_issue_numbers]; do open "https://github.com/nrwl/nx/issues/$issue"; done
-
-# Linux - Opens all issues in browser tabs  
-for issue in [space_separated_issue_numbers]; do xdg-open "https://github.com/nrwl/nx/issues/$issue"; done
-
-# Windows - Opens all issues in browser tabs
-for issue in [space_separated_issue_numbers]; do start "https://github.com/nrwl/nx/issues/$issue"; done
-
-# Alternative: Use gh CLI to open issues directly (one at a time)
-gh issue view [issue_number] --repo nrwl/nx --web
-```
-
-**Example Usage:**
-```bash
-# Linux example with actual issue numbers from assignment
-for issue in 32296 32295 32290 32285 32281 32277 32267 32265 32258 32254 32249 32236 32234 32225 32219 32214 32212 32209 32208 32207 32206 32205 32203 32190 32188; do xdg-open "https://github.com/nrwl/nx/issues/$issue"; done
-
-# macOS example with actual issue numbers from assignment
-for issue in 32296 32295 32290 32285 32281 32277 32267 32265 32258 32254 32249 32236 32234 32225 32219 32214 32212 32209 32208 32207 32206 32205 32203 32190 32188; do open "https://github.com/nrwl/nx/issues/$issue"; done
-```
-
-**Critical Requirements:**
-1. Every single assigned issue MUST be opened in browser
-2. Create a comprehensive list of ALL issue numbers that were assigned
-3. Use the appropriate command for the operating system
-4. Verify that all browser tabs opened successfully
-5. Do not consider the assignment process complete until all issues are opened for review
-
-## Key Features
-
-- Technology-first assignment (Angular issues go to Angular expert, not general web expert)
-- Keyword-based logic for faster categorization
-- Conservative priority assignment (fewer high priority items)
-- Error pattern recognition for better accuracy
-- Validation steps to double-check assignments
-- Bulk operations for efficiency
+- **Skill Reusability**: The `github-issue-triage` skill can be used in other workflows beyond this command
+- **Multi-Agent Efficiency**: Agents can work in parallel on different stages
+- **Comprehensive Rules**: All assignment logic is centralized in the skill for consistency
+- **Validated Assignments**: Mandatory browser verification ensures quality
+- **Scalable**: Easy to add new team members or technologies to the skill
+- **Maintainable**: Changes to rules only need to be updated in the skill file
