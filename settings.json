@@ -1,5 +1,14 @@
 {
-  "model": "haiku",
   "hooks": {},
-  "alwaysThinkingEnabled": false
+  "alwaysThinkingEnabled": true,
+  "permissions": {
+    "allow": [
+      "Bash(tmux send-keys:*)",
+      "Bash(tmux capture-pane:*)",
+      "Bash(tmux list-panes:*)",
+      "Bash(tmux split-window:*)",
+      "Bash(tmux kill-pane:*)",
+      "Bash(tmux select-pane:*)"
+    ]
+  }
 }
