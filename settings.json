@@ -1,6 +1,4 @@
 {
-  "hooks": {},
-  "alwaysThinkingEnabled": true,
   "permissions": {
     "allow": [
       "Bash(tmux send-keys:*)",
@@ -10,5 +8,7 @@
       "Bash(tmux kill-pane:*)",
       "Bash(tmux select-pane:*)"
     ]
-  }
+  },
+  "hooks": {},
+  "alwaysThinkingEnabled": true
 }

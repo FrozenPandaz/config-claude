@@ -9,3 +9,10 @@ I never want to mention that the PR was co-authored by claude Whenever you commi
 Keep commit messages concise and descriptive. Use conventional commit format when possible (feat:, fix:, docs:, etc.)
 
 The main github repo that I work on is nrwl/nx so please use that repo when you need to find stuff out from github
+
+# Tmux Usage
+IMPORTANT: Every Claude session should have its own dedicated tmux pane.
+- At the start of a session, create a new tmux pane for this session's work
+- Run all commands (both quick and long-running) in this dedicated pane
+- Keep the pane organized and monitor output as needed
+- Use this pane for dev servers, watchers, builds, and any other commands
