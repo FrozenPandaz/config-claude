@@ -25,3 +25,10 @@ shell-snapshots
 # Plans and plugins
 plans/
 plugins/
+
+# Backups and caches
+backups/
+cache/
+paste-cache/
+stats-cache.json
+mcp-needs-auth-cache.json
