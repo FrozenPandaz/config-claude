@@ -6,7 +6,17 @@
       "Bash(tmux list-panes:*)",
       "Bash(tmux split-window:*)",
       "Bash(tmux kill-pane:*)",
-      "Bash(tmux select-pane:*)"
+      "Bash(tmux select-pane:*)",
+      "Bash(tmux new-window:*)",
+      "Bash(tmux kill-window:*)",
+      "Bash(tmux select-window:*)",
+      "Bash(tmux list-windows:*)",
+      "Bash(tmux new-session:*)",
+      "Bash(tmux list-sessions:*)",
+      "Bash(tmux resize-pane:*)",
+      "Bash(tmux display-message:*)",
+      "Bash(tmux has-session:*)",
+      "Bash(tmux pipe-pane:*)"
     ]
   },
   "hooks": {},
