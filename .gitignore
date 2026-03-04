@@ -32,3 +32,7 @@ cache/
 paste-cache/
 stats-cache.json
 mcp-needs-auth-cache.json
+
+# Tasks and telemetry
+tasks/
+telemetry/
